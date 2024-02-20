@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+  Poland: &nbsp;
+  <a href="https://www.fantasynamegenerators.com/polish-names.php" target="_blank">Name</a> &nbsp;&nbsp;
+  <a href="https://mail.tm/en/" target="_blank">Mail</a> &nbsp;&nbsp;
+  <a href="https://www.bestrandoms.com/random-address-in-pl?quantity=6" target="_blank">Address</a>
+  <br><br>
+  <textarea id="names" rows="10" onchange="removeNonAscii()"></textarea>
+  <br><br>
+  <ol id="name_ul">
+  </ul>
+
+  <script>
+    function removeNonAscii() {
+      var x = document.getElementById("names").value;
+      var y = x.replace(/[^\x00-\x7F]/g, "");
+      document.getElementById("names").value = y;
+
+      // some extra work
+      const arr = y.split("\n");
+      var z = '';
+      for (let i = 0; i < arr.length; i++) {
+        lowerName = arr[i].toLowerCase().replaceAll(' ', '');
+        emailAddr = lowerName + '@pretreer.com';
+        loginPass = convert2Pwd(emailAddr);
+        firstName = arr[i].slice(0, arr[i].indexOf(' '));
+        lasttName = arr[i].slice(arr[i].indexOf(' ') + 1, arr[i].length);
+        z += "<li>";
+        z += "<input size='15' value='" + lowerName + "' onfocus='pastetoclipboard(this)' onchange='changeEmailPwd(this)'>";
+        z += "<input size='7' value='" + firstName + "' onfocus='pastetoclipboard(this)'>";
+        z += "<input size='7' value='" + lasttName + "' onfocus='pastetoclipboard(this)'>";
+        z += "<input size='25' value='" + emailAddr + "' onfocus='pastetoclipboard(this)'>";
+        z += "<input size='25' value='" + loginPass + "' onfocus='pastetoclipboard(this)'>";
+        z += "</li>";
+      }
+      document.getElementById("name_ul").innerHTML = z;
+    }
+
+    var prev = '';
+    function pastetoclipboard(el) {
+      if (el.value) {
+        if (prev != el.value) {
+          navigator.clipboard.writeText(el.value);
+          prev = el.value;
+        }
+      }
+    }
+
+    function reverseString(str) {
+        return str.split("").reverse().join("");
+    }
+
+    function convert2Pwd(x) {
+      return reverseString(x.split("@")[0]) + "@" + x.split("@")[1];
+    }
+  
+    function changeEmailPwd(el) {
+      el.nextSibling.nextSibling.nextSibling.value = el.value + '@pretreer.com';
+      el.nextSibling.nextSibling.nextSibling.nextSibling.value = convert2Pwd(el.value + '@pretreer.com');
+    }
+
+  </script>
+
+
+
+
+  <hr>
+
+
+
+
+
+  <button onclick="getClipBoard(setX_Y)">Convert</button>
+  <br><br>
+  <input type="text" id="xText" size="40" onfocus="pastetoclipboard(this)">
+  <button onclick="pastetoclipboard1()">Copy</button>
+  <br><br>
+  <input type="text" id="yText" size="40" onfocus="pastetoclipboard(this)">
+  <button onclick="pastetoclipboard2()">Copy</button>
+
+  <script>
+
+    function getClipBoard(callBack) {
+      navigator.clipboard.readText()
+        .then(text => {
+          callBack(text);
+        })
+        .catch(err => {
+          alert('Failed to read clipboard contents: ', err);
+        });
+    }
+
+    let setX_Y = function(x) {
+      document.getElementById("xText").value = x;
+      document.getElementById("yText").value = convert2Pwd(x);
+      //??? navigator.clipboard.writeText(y);
+    };
+
+    function pastetoclipboard1() {
+      navigator.clipboard.writeText(document.getElementById("xText").value);
+    }
+
+    function pastetoclipboard2() {
+      navigator.clipboard.writeText(document.getElementById("yText").value);
+    }
+
+  </script>
+</body>
+</html>
